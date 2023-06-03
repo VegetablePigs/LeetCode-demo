@@ -5,6 +5,13 @@ public class RemoveElement {
      * 移除元素
      */
 
+    public static void main(String[] args) {
+        int[] nums = {3,2,2,3};
+        RemoveElement solution = new RemoveElement();
+        int result = solution.removeElement(nums, 3);
+        System.out.println(result);
+    }
+
     // 快慢指针
     public int removeElement(int[] nums, int val) {
         int slowIndex = 0;

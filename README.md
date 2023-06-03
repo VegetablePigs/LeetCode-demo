@@ -66,7 +66,7 @@ public int search(int[] nums, int target) {
         return size;
     }
     ```
-    ##### 1.2.2 双指针法
+    ##### 1.2.2 双指针法 &#x2714;
     双指针法（快慢指针法）：通过一个快慢指针在一个for循环下完成两个for循环的工作。  
     定义快慢指针
     * 快指针：寻找新数组的元素 ，新数组就是不含有目标元素的数组
@@ -117,3 +117,37 @@ public int removeElement(int[] nums, int val) {
         return leftIndex;
     }
 ```
+#### 1.3 有序数组的平方 lc-977
+* 977
+  * 注意：数组是有序的，所以平方后的数组也是有序的，所以可以使用双指针法，从两端开始遍历，比较两端的平方值，将较大的值放入新数组的末尾。
+  * 时间复杂度：O(n)
+  * 空间复杂度：O(n)  
+  
+##### 1.3.1 双指针法  
+i指向起始位置，j指向终止位置。  
+定义一个新数组result，和A数组一样的大小，让k指向result数组终止位置。  
+如果A[i] * A[i] < A[j] * A[j] 那么result[k--] = A[j] * A[j]; 。  
+如果A[i] * A[i] >= A[j] * A[j] 那么result[k--] = A[i] * A[i]; 。  
+
+```java
+public int[] sortedSquares(int[] nums) {
+        int right = nums.length - 1;
+        int left = 0;
+        int[] result = new int[nums.length];
+        int index = result.length - 1;
+        while (left <= right) {
+            if (nums[left] * nums[left] > nums[right] * nums[right]) {
+                // 正数的相对位置是不变的， 需要调整的是负数平方后的相对位置
+                result[index--] = nums[left] * nums[left];
+                ++left;
+            } else {
+                result[index--] = nums[right] * nums[right];
+                --right;
+            }
+        }
+        return result;
+    }
+```
+
+
+  
