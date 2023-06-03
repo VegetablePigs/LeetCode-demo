@@ -46,4 +46,74 @@ public int search(int[] nums, int target) {
 ```
 #### 1.2 移除元素
 * 27 
-  * 注意：
+  * 注意：要知道数组的元素在内存地址中是连续的，不能单独删除数组中的某个元素，只能覆盖。
+  ##### 1.2.1 暴力法
+  这个题目暴力的解法就是两层for循环，一个for循环遍历数组元素 ，第二个for循环更新数组。  
+    时间复杂度：O(n^2)
+    空间复杂度：O(1)
+    ```java
+    public int removeElement(int[] nums, int val) {
+        int size = nums.size();
+        for (int i = 0; i < size; i++) {
+            if (nums[i] == val) { // 发现需要移除的元素，就将数组集体向前移动一位
+                for (int j = i + 1; j < size; j++) {
+                    nums[j - 1] = nums[j];
+                }
+                i--; // 因为下标i以后的数值都向前移动了一位，所以i也向前移动一位
+                size--; // 此时数组的大小-1
+            }
+        }
+        return size;
+    }
+    ```
+    ##### 1.2.2 双指针法
+    双指针法（快慢指针法）：通过一个快慢指针在一个for循环下完成两个for循环的工作。  
+    定义快慢指针
+    * 快指针：寻找新数组的元素 ，新数组就是不含有目标元素的数组
+    * 慢指针：指向更新 新数组下标的位置
+    双指针法（快慢指针法）在数组和链表的操作中是非常常见的，很多考察数组、链表、字符串等操作的面试题，都使用双指针法。  
+  
+注意这些实现方法并没有改变元素的相对位置！  
+时间复杂度：O(n)  
+空间复杂度：O(1)  
+
+```java
+public int removeElement(int[] nums, int val) {
+        int slowIndex = 0;
+        for (int fastIndex = 0; fastIndex < nums.length; fastIndex++) {
+        if (val != nums[fastIndex]) {
+        nums[slowIndex++] = nums[fastIndex];
+        }
+        }
+        return slowIndex;
+        }
+```
+```java
+/**
+     * 相向双指针方法，基于元素顺序可以改变的题目描述改变了元素相对位置，确保了移动最少元素
+     * 时间复杂度：O(n)
+     * 空间复杂度：O(1)
+     */
+    public int removeElement2(int[] nums, int val) {
+        int leftIndex = 0;
+        int rightIndex = nums.length - 1;
+        while(rightIndex >= 0 && nums[rightIndex] == val) {
+            //将right移到从右数第一个值不为val的位置
+            rightIndex--;
+        }
+        while(leftIndex <= rightIndex){
+            if (nums[leftIndex] == val){
+                //left位置的元素需要移除
+                //将right位置的元素移到left（覆盖），right位置移除
+                nums[leftIndex] = nums[rightIndex];
+                rightIndex--;
+            }
+            leftIndex++;
+            while(rightIndex >= 0 && nums[rightIndex] == val) {
+                //将right移到从右数第一个值不为val的位置
+                rightIndex--;
+            }
+        }
+        return leftIndex;
+    }
+```
